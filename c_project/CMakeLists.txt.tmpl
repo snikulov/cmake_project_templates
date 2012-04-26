@@ -1,0 +1,24 @@
+#--------------------------------------------
+# C language project template
+#
+# default folder structure as follows
+# <project root folder>
+#      cmake/   <- here the additional modules with handy macro and finders
+#      include/
+#      src/
+#      test/
+#
+#--------------------------------------------
+cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+
+# rename to your name here
+set(PROJECT_NAME any_your_name_here)
+
+# define project for C language
+project(${PROJECT_NAME} C)
+
+# set where to find additional cmake modules if any
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
+
+add_executable()
+
