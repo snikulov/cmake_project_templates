@@ -18,7 +18,23 @@ set(PROJECT_NAME any_your_name_here)
 project(${PROJECT_NAME} C)
 
 # set where to find additional cmake modules if any
+# comment it out if not required
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
-add_executable()
+# user controlled options for build
+#option(USE_FEATURE1 "Product should be build with option FEATURE1 enabled" OFF)
+#option(USE_FEATURE2 "Product should be build with option FEATURE2 enabled" OFF)
+#option(USE_FEATURE3 "Product should be build with option FEATURE3 enabled" OFF)
 
+# add include path for project
+# add additional path if required
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+# get all *.c files from src to build target
+file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
+
+# build target
+add_executable(${PROJECT_NAME} ${SRC_FILES})
+
+# linker command - add additional libraries for build target
+#target_link_libraries(${PROJECT_NAME})
