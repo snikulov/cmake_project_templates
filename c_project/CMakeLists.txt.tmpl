@@ -17,6 +17,10 @@ set(PROJECT_NAME any_your_name_here)
 # define project for C language
 project(${PROJECT_NAME} C)
 
+# enable TDD
+include(CTest)
+enable_testing()
+
 # set where to find additional cmake modules if any
 # comment it out if not required
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
@@ -32,6 +36,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # get all *.c files from src to build target
 file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
+source_group("Source Files" FILES ${SRC_FILES})
 
 # build target
 add_executable(${PROJECT_NAME} ${SRC_FILES})
