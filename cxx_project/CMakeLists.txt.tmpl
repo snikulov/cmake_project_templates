@@ -1,5 +1,5 @@
 #--------------------------------------------
-# C language project template
+# C++ language project template
 #
 # default folder structure as follows
 # <project root folder>
@@ -11,11 +11,14 @@
 #--------------------------------------------
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 
+# use standard file endings - rename to cxx if needed
+set(SRC_EXT_PATTERN ".cpp")
+
 # rename to your name here
 set(PROJECT_NAME add_your_project_name_here)
 
-# define project for C language
-project(${PROJECT_NAME} C)
+# define project for C++ language
+project(${PROJECT_NAME} CXX)
 
 # enable TDD
 include(CTest)
@@ -26,20 +29,37 @@ enable_testing()
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 # user controlled options for build
-#option(USE_FEATURE1 "Product should be build with option FEATURE1 enabled" OFF)
+
+# set boost library be used by default
+option(USE_BOOST_LIB "Product should be build with Boost Library enabled" ON)
+
 #option(USE_FEATURE2 "Product should be build with option FEATURE2 enabled" OFF)
 #option(USE_FEATURE3 "Product should be build with option FEATURE3 enabled" OFF)
+
+if (USE_BOOST_LIB)
+	#-- fix to handle newly released 1.51
+	set(Boost_ADDITIONAL_VERSIONS "1.51" "1.51.0")
+	find_package(Boost)
+	if(Boost_FOUND)
+		include_directories(${Boost_INCLUDE_DIRS})
+	else()
+		message(FATAL_ERROR "Required Boost library")
+	endif()
+endif()
 
 # add include path for project
 # add additional path if required
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-# get all *.c files from src to build target
-file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
+# get all *.cpp files from src to build target
+file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*${SRC_EXT_PATTERN})
 source_group("Source Files" FILES ${SRC_FILES})
 
 # build target
 add_executable(${PROJECT_NAME} ${SRC_FILES})
 
 # linker command - add additional libraries for build target
-#target_link_libraries(${PROJECT_NAME})
+if (USE_BOOST_LIB AND Boost_FOUND)
+	target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+endif()
+
