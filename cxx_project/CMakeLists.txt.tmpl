@@ -33,8 +33,18 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 # set boost library be used by default
 option(USE_BOOST_LIB "Product should be build with Boost Library enabled" ON)
 
-#option(USE_FEATURE2 "Product should be build with option FEATURE2 enabled" OFF)
+# set compiler support for C++11 standard
+option(USE_CXX11_STD "Product should be build with C++11 compiler option enabled" ON)
 #option(USE_FEATURE3 "Product should be build with option FEATURE3 enabled" OFF)
+
+if(USE_CXX11_STD)
+	if(CMAKE_COMPILER_IS_GNUCXX)
+		set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11")
+	else()
+		# don't know so far how to enable it for clang/icc/msvc
+		message(FATAL_ERROR "USE_CXX11_STD: only GCC is supported")
+	endif()
+endif()
 
 if (USE_BOOST_LIB)
 	#-- fix to handle newly released 1.51
@@ -43,7 +53,7 @@ if (USE_BOOST_LIB)
 	if(Boost_FOUND)
 		include_directories(${Boost_INCLUDE_DIRS})
 	else()
-		message(FATAL_ERROR "Required Boost library")
+		message(FATAL_ERROR "USE_BOOST_LIB: Required Boost library")
 	endif()
 endif()
 
